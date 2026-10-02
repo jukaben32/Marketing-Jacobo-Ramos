@@ -1,0 +1,60 @@
+{
+  "name": "Jacobo Ramos - Oficina Virtual (recibir solicitud)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "oficina-virtual",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "a1f0c0de-0001-4000-8000-000000000001",
+      "name": "Recibir solicitud",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "oficina-virtual"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "f1", "name": "ticket", "value": "={{ $json.body.ticket }}", "type": "string" },
+            { "id": "f2", "name": "nombre", "value": "={{ $json.body.nombre }}", "type": "string" },
+            { "id": "f3", "name": "telefono", "value": "={{ $json.body.telefono }}", "type": "string" },
+            { "id": "f4", "name": "localidad", "value": "={{ $json.body.localidad }}", "type": "string" },
+            { "id": "f5", "name": "tipo", "value": "={{ $json.body.tipo }}", "type": "string" },
+            { "id": "f6", "name": "mensaje", "value": "={{ $json.body.mensaje }}", "type": "string" },
+            { "id": "f7", "name": "fecha", "value": "={{ $json.body.fecha }}", "type": "string" },
+            { "id": "f8", "name": "estado", "value": "Recibido", "type": "string" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1f0c0de-0002-4000-8000-000000000002",
+      "name": "Ordenar datos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [240, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"ok\": true, \"ticket\": $json.ticket } }}",
+        "options": {}
+      },
+      "id": "a1f0c0de-0003-4000-8000-000000000003",
+      "name": "Responder a la web",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [480, 0]
+    }
+  ],
+  "connections": {
+    "Recibir solicitud": { "main": [[{ "node": "Ordenar datos", "type": "main", "index": 0 }]] },
+    "Ordenar datos": { "main": [[{ "node": "Responder a la web", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}

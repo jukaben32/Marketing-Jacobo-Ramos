@@ -1,0 +1,36 @@
+# Postgres local SOLO para desarrollo de la Oficina Jacobo Ramos.
+# Nombres, volumen y puertos propios (5435 y 8085) para no chocar con el CRM del taller (5432 y 8080).
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: jr_oficina_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-oficina_jr}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-oficina_jr_dev_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-oficina_jr}
+    ports:
+      # Solo accesible desde este equipo
+      - "127.0.0.1:5435:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./db/init/00-roles.sql:/docker-entrypoint-initdb.d/00-roles.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-oficina_jr} -d ${POSTGRES_DB:-oficina_jr}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  adminer:
+    image: adminer:5
+    container_name: jr_oficina_adminer
+    ports:
+      - "127.0.0.1:8085:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+    name: jr_oficina_pgdata

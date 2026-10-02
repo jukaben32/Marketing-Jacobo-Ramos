@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+/* Activa el modo oscuro por clase (.dark en <html>) en vez de por preferencia
+   del sistema operativo, para que el interruptor "Tema" del panel controle
+   tanto las clases dark: de Tailwind como las variables CSS de abajo. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Marca "Oficina Jacobo Ramos": azul marino + dorado + crema (la misma de la landing).
+   Los componentes heredados usan las clases orange-* de Tailwind; aquí se redefine la
+   escala orange como dorado, así toda la interfaz adopta la marca sin tocar cada archivo.
+   Los tonos 600+ son dorados oscuros para que el texto sobre fondo claro siga legible. */
+@theme {
+  --color-orange-50: #FBF7E8;
+  --color-orange-100: #F6EBC4;
+  --color-orange-200: #EFDB93;
+  --color-orange-300: #EACB62;
+  --color-orange-400: #F3C649;
+  --color-orange-500: #D4AF37;
+  --color-orange-600: #8F6F10;
+  --color-orange-700: #7A5C0B;
+  --color-orange-800: #5E4709;
+  --color-orange-900: #433206;
+  --color-orange-950: #2A1F03;
+}
+
+@layer base {
+  :root {
+    --bg-page: #F6F1E7;
+    --surface-card: #FFFFFF;
+    --border-subtle: #E2DACA;
+    --border-strong: #CFC5B0;
+    --text-primary: #1B2433;
+    --text-secondary: #5B6472;
+    --text-muted: #8B94A3;
+
+    --brand-50: #FBF7E8;
+    --brand-100: #F6EBC4;
+    --brand-200: #EFDB93;
+    --brand-300: #EACB62;
+    --brand-400: #F3C649;
+    --brand-500: #D4AF37;
+    --brand-600: #8F6F10;
+    --brand-700: #7A5C0B;
+    --brand-800: #5E4709;
+    --brand-900: #433206;
+    --brand-950: #2A1F03;
+
+    --chart-call: #D4AF37;
+    --chart-app: #134074;
+    --chart-cost: #0D9488;
+
+    --stack-stt: #134074;
+    --stack-llm: #D4AF37;
+    --stack-tts: #0D9488;
+    --stack-fee: #5B6472;
+
+    --stripe-color: rgba(11, 37, 69, 0.04);
+  }
+
+  .dark {
+    --bg-page: #06172E;
+    --surface-card: #0B2545;
+    --border-subtle: #1B3A5F;
+    --border-strong: #2A4C75;
+    --text-primary: #F6F1E7;
+    --text-secondary: #B6C0CF;
+    --text-muted: #8190A6;
+
+    --brand-500: #F3C649;
+    --chart-call: #F3C649;
+    --chart-app: #6FA0DD;
+    --chart-cost: #2FA8A8;
+
+    --stack-stt: #6FA0DD;
+    --stack-llm: #F3C649;
+    --stack-tts: #2FA8A8;
+    --stack-fee: #B6C0CF;
+
+    --stripe-color: rgba(255, 255, 255, 0.04);
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Componentes y Clases Reutilizables del Sistema de Diseño */
+.card-saas {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.25rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.125rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.75rem;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #0B2545;
+  color: #FFFFFF;
+}
+.dark .btn-primary {
+  background-color: #D4AF37;
+  color: #06172E;
+}
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-0.5px);
+}
+
+.btn-secondary {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.btn-secondary:hover {
+  background-color: var(--bg-page);
+  border-color: var(--border-strong);
+}
+
+.btn-danger {
+  background-color: #DC2626;
+  color: #FFFFFF;
+}
+.btn-danger:hover {
+  background-color: #B91C1C;
+}
+
+.field {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field:focus {
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+}
+
+.seg-container {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 9999px;
+}
+.dark .seg-container {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+.seg-item {
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  color: var(--text-secondary);
+  transition: all 0.15s ease;
+}
+.seg-item.active {
+  background-color: var(--surface-card);
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.texture-stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--stripe-color),
+    var(--stripe-color) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+
+/* Indicador lateral de navegación activa */
+.nav-active-indicator {
+  position: absolute;
+  left: 0;
+  top: 0.375rem;
+  bottom: 0.375rem;
+  width: 3.5px;
+  background-color: var(--brand-500);
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}

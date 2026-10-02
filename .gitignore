@@ -1,0 +1,35 @@
+# Dependencias y compilados
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# Secretos y configuración local (el .env real nunca se sube; la plantilla .env.example sí)
+.env
+.env.*
+!.env.example
+.vercel
+
+# Fotos del diputado y banner: derechos de imagen, se añaden al repositorio solo con permiso
+landing/assets/
+
+# Documentos heredados del CRM del taller: contienen identificadores de producción de otro cliente
+crm/PROMPT-crm-agente-voz.md
+crm/docs/ESTADO-Y-PENDIENTES.md
+
+# Despliegue autoalojado del taller (Dokploy): no se usa aquí y trae contraseñas de ejemplo
+crm/docker-compose.dokploy.yml
+crm/Dockerfile
+crm/docker-entrypoint.sh
+
+# Skills y configuración de asistentes copiadas de otro proyecto
+crm/.claude/
+crm/skills/
+crm/skills-lock.json
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

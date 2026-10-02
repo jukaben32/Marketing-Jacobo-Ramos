@@ -1,0 +1,184 @@
+import { NextRequest, NextResponse } from "next/server";
+import { pool } from "@/lib/db";
+import { hashPassword } from "@/lib/auth/password";
+import { createSession } from "@/lib/auth/session";
+import { NICHO_CONFIG } from "@/lib/vapi/prompt";
+import { env } from "@/lib/env";
+
+export async function POST(req: NextRequest) {
+  // Registro abierto apagado por defecto: este panel pertenece a una sola oficina
+  if (env.ALLOW_SIGNUP !== "true") {
+    return NextResponse.json(
+      { error: "El registro de cuentas nuevas está desactivado. Pide acceso al administrador de la oficina." },
+      { status: 403 }
+    );
+  }
+
+  try {
+    const body = await req.json();
+    const { email, password, fullName, businessName } = body;
+
+    if (!email || !password || !fullName || !businessName) {
+      return NextResponse.json(
+        { error: "Por favor, completa todos los campos requeridos." },
+        { status: 400 }
+      );
+    }
+
+    if (password.length < 6) {
+      return NextResponse.json(
+        { error: "La contraseña debe tener al menos 6 caracteres." },
+        { status: 400 }
+      );
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const client = await pool.connect();
+
+    try {
+      await client.query("BEGIN");
+
+      // 1. Verificar si el email ya existe
+      const { rows: existingUser } = await client.query(
+        "SELECT id FROM users WHERE email = $1",
+        [normalizedEmail]
+      );
+      if (existingUser.length > 0) {
+        await client.query("ROLLBACK");
+        return NextResponse.json(
+          { error: "Ya existe una cuenta registrada con este correo electrónico." },
+          { status: 400 }
+        );
+      }
+
+      // 2. Crear usuario
+      const passwordHash = await hashPassword(password);
+      const { rows: userRows } = await client.query<{ id: string }>(
+        `INSERT INTO users (email, password_hash, full_name)
+         VALUES ($1, $2, $3)
+         RETURNING id`,
+        [normalizedEmail, passwordHash, fullName.trim()]
+      );
+      const userId = userRows[0].id;
+
+      // 3. Generar ID y slug para el nuevo negocio y fijar el contexto de tenant para RLS
+      const { rows: metaRows } = await client.query<{ id: string; slug: string }>(
+        "SELECT uuidv7() AS id, slugify_business_name($1) AS slug",
+        [businessName.trim()]
+      );
+      const businessId = metaRows[0].id;
+      const slug = metaRows[0].slug;
+
+      // Fijar variable de inquilino para que las políticas RLS permitan la inserción
+      await client.query("SELECT set_config('app.business_id', $1, true)", [businessId]);
+
+      await client.query(
+        `INSERT INTO businesses (id, name, slug, timezone)
+         VALUES ($1, $2, $3, 'America/Santo_Domingo')`,
+        [businessId, businessName.trim(), slug]
+      );
+
+      // 4. Crear membresía como Propietario (owner)
+      await client.query(
+        `INSERT INTO memberships (user_id, business_id, role)
+         VALUES ($1, $2, 'owner')`,
+        [userId, businessId]
+      );
+
+      // 5. Crear Agente de Voz inicial con valores de NICHO
+      const defaultPrompt = `# Identidad
+Eres el asistente virtual de ${businessName.trim()}, la ${NICHO_CONFIG.tipoNegocio}, en República Dominicana.
+Coges el teléfono cuando el equipo está atendiendo a la comunidad y no puede responder.
+Tu objetivo es recibir la solicitud de la persona, darle un ticket de seguimiento y, si lo pide, agendar una audiencia.
+
+# Cómo hablas
+- Español dominicano. Tono: cercano y respetuoso, nunca ceremonioso.
+- Una o dos frases por turno. Jamás sueltes un párrafo.
+- Una sola pregunta cada vez, y espera la respuesta antes de seguir.
+- Hablas, no escribes. Nada de listas, viñetas, guiones ni símbolos.
+- Di las cosas como se dicen: "el jueves catorce a las diez y media", "dos mil quinientos pesos".
+- Si te interrumpen, para de hablar y escucha.
+- Si no entiendes algo, pide que te lo repitan. No adivines.`;
+
+      await client.query(
+        `INSERT INTO voice_agents (
+           business_id, system_prompt, first_message, tone,
+           voice_provider, voice_id, voice_model, voice_language, language,
+           model, transcriber, handoff_message, slot_capacity, min_notice_minutes, booking_horizon_days
+         ) VALUES (
+           $1, $2, $3, 'cercano y respetuoso',
+           '11labs', 'UOIqAnmS11Reiei1Ytkc', 'eleven_flash_v2_5', 'es', 'es',
+           '{"provider":"openai","model":"gpt-4.1-mini"}'::jsonb,
+           '{"provider":"deepgram","model":"nova-3-general","language":"es"}'::jsonb,
+           'Le paso con alguien del equipo de la oficina, un segundo.', 1, 60, 14
+         )`,
+        [
+          businessId,
+          defaultPrompt,
+          `${businessName.trim()}, buenas. Soy el asistente virtual, ¿en qué le puedo ayudar?`,
+        ]
+      );
+
+      // 6. Horarios semanales por defecto (Lunes a Viernes 08:30-13:30 y 15:30-19:00)
+      for (let day = 1; day <= 5; day++) {
+        await client.query(
+          `INSERT INTO business_hours (business_id, weekday, opens_at, closes_at, is_closed)
+           VALUES ($1, $2, '08:30:00', '13:30:00', false),
+                  ($1, $2, '15:30:00', '19:00:00', false)`,
+          [businessId, day]
+        );
+      }
+      await client.query(
+        `INSERT INTO business_hours (business_id, weekday, opens_at, closes_at, is_closed)
+         VALUES ($1, 6, '09:00:00', '13:00:00', false),
+                ($1, 0, '00:00:00', '00:00:00', true)`,
+        [businessId]
+      );
+
+      // 7. Audiencias y gestiones iniciales de la oficina (sin precio)
+      const initialServices = [
+        { name: "Audiencia con el equipo legislativo", dur: 30, price: null, desc: "Reunión para presentar una necesidad o propuesta." },
+        { name: "Reunión con juntas de vecinos", dur: 45, price: null, desc: "Encuentro para coordinar gestiones de un sector." },
+        { name: "Orientación sobre una solicitud", dur: 20, price: null, desc: "Estado y próximos pasos de una solicitud registrada." },
+      ];
+
+      for (let i = 0; i < initialServices.length; i++) {
+        const s = initialServices[i];
+        await client.query(
+          `INSERT INTO services (business_id, name, duration_minutes, price_cents, description, is_active, sort_order)
+           VALUES ($1, $2, $3, $4, $5, true, $6)`,
+          [businessId, s.name, s.dur, s.price, s.desc, i + 1]
+        );
+      }
+
+      await client.query("COMMIT");
+
+      // Iniciar sesión automáticamente
+      const userAgent = req.headers.get("user-agent");
+      const ip = req.headers.get("x-forwarded-for") || "unknown";
+      const token = await createSession(userId, userAgent, ip);
+
+      const response = NextResponse.json({ success: true });
+      response.cookies.set("jr_oficina_session", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 30 * 24 * 60 * 60,
+      });
+
+      return response;
+    } catch (err) {
+      await client.query("ROLLBACK");
+      throw err;
+    } finally {
+      client.release();
+    }
+  } catch (err: any) {
+    console.error("Error en registro:", err);
+    return NextResponse.json(
+      { error: "No se pudo completar el registro. Inténtalo de nuevo." },
+      { status: 500 }
+    );
+  }
+}

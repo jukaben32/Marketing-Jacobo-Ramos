@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jacobo Ramos | Diputado por San Pedro de Macorís</title>
+    <meta name="description" content="Sitio del diputado Jacobo Ramos: labor legislativa, trabajo en territorio y Oficina Virtual de Atención Ciudadana para San Pedro de Macorís.">
+    <meta property="og:title" content="Jacobo Ramos | Diputado por San Pedro de Macorís">
+    <meta property="og:description" content="Labor legislativa, territorio y atención ciudadana.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#0B2545">
+
+    <!-- Tailwind por CDN (suficiente para prototipo; en producción se compila) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Paleta del proyecto: azul marino + dorado + crema (papel de gaceta)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: { 800: '#102A45', 900: '#0B2545', 950: '#06172E' },
+                        gold: { 300: '#F3D98B', 400: '#F3C649', 500: '#D4AF37', 700: '#7A5C0B' },
+                        brandBlue: '#134074',
+                        paper: '#F6F1E7',
+                        ink: '#1B2433'
+                    },
+                    fontFamily: {
+                        sans: ['Public Sans', 'sans-serif'],
+                        serif: ['Newsreader', 'Georgia', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Public Sans', sans-serif; background: #F6F1E7; color: #1B2433; }
+        .display { font-family: 'Newsreader', Georgia, serif; letter-spacing: -0.02em; line-height: 1.02; }
+        .eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+
+        /* Trama sutil de líneas en las secciones oscuras (textura de papel institucional) */
+        .ruled {
+            background-color: #0B2545;
+            background-image: repeating-linear-gradient(0deg, rgba(243,198,73,.05) 0 1px, transparent 1px 44px);
+        }
+        /* Marco de retrato en arco, con borde dorado desplazado para dar profundidad */
+        .arch { border-radius: 999px 999px 0 0; }
+        .arch-offset { position: absolute; inset: 0; transform: translate(14px, 14px); border: 1px solid #D4AF37; border-radius: 999px 999px 0 0; }
+
+        /* Entrada suave al hacer scroll; solo si hay JS y la persona no pidió menos movimiento */
+        .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+        .js .reveal.in { opacity: 1; transform: none; }
+        @media (prefers-reduced-motion: reduce) {
+            .js .reveal { opacity: 1; transform: none; transition: none; }
+            html { scroll-behavior: auto !important; }
+        }
+
+        a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+            outline: 2px solid #D4AF37; outline-offset: 3px;
+        }
+        section[id] { scroll-margin-top: 4.5rem; }
+
+        /* Campos del formulario */
+        .field { width: 100%; background: #fff; border: 1px solid #C9C2B2; border-radius: 4px; padding: .8rem 1rem; font-size: .9rem; }
+        .field:focus { border-color: #0B2545; }
+        .row-detail { display: none; }
+        .row-open .row-detail { display: block; }
+        .row-open .row-caret { transform: rotate(180deg); }
+    </style>
+    <script>document.documentElement.classList.add('js');</script>
+</head>
+<body class="antialiased selection:bg-gold-500 selection:text-navy-950">
+
+    <!-- ENCABEZADO -->
+    <header class="sticky top-0 z-40 bg-navy-950/95 backdrop-blur border-b border-gold-500/30 text-white">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8 h-16 flex items-center justify-between">
+            <a href="#inicio" class="flex items-center gap-3" aria-label="Jacobo Ramos, inicio">
+                <span class="w-9 h-9 border border-gold-500 text-gold-400 display text-lg font-semibold flex items-center justify-center">JR</span>
+                <span class="leading-tight">
+                    <span class="block text-sm font-bold tracking-wide uppercase">Jacobo Ramos</span>
+                    <span class="block text-[11px] text-slate-300">Diputado · San Pedro de Macorís</span>
+                </span>
+            </a>
+            <nav class="hidden lg:flex items-center gap-8 text-sm text-slate-200" aria-label="Navegación principal">
+                <a href="#trayectoria" class="hover:text-gold-400 transition-colors">Trayectoria</a>
+                <a href="#labor" class="hover:text-gold-400 transition-colors">Labor legislativa</a>
+                <a href="#territorio" class="hover:text-gold-400 transition-colors">En territorio</a>
+                <a href="#oficina-virtual" class="bg-gold-500 hover:bg-gold-400 text-navy-950 font-bold px-5 py-2 transition-colors">Oficina Virtual</a>
+            </nav>
+            <button id="mobile-menu-btn" type="button" class="lg:hidden p-2 text-white" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+                <i class="fa-solid fa-bars text-xl" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-white/10 px-5 pb-5 pt-2 text-sm">
+            <a href="#trayectoria" class="mobile-link block py-3 border-b border-white/10">Trayectoria</a>
+            <a href="#labor" class="mobile-link block py-3 border-b border-white/10">Labor legislativa</a>
+            <a href="#territorio" class="mobile-link block py-3 border-b border-white/10">En territorio</a>
+            <a href="#oficina-virtual" class="mobile-link block mt-4 text-center bg-gold-500 text-navy-950 font-bold py-3">Oficina Virtual</a>
+        </div>
+    </header>
+
+    <main>
+    <!-- PORTADA -->
+    <section id="inicio" class="ruled text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8 pt-10 pb-20 lg:pt-14 lg:pb-28">
+            <!-- Cintillo estilo gaceta -->
+            <div class="flex flex-wrap items-center justify-between gap-2 border-y border-gold-500/40 py-2 mb-12 eyebrow text-gold-400">
+                <span>República Dominicana · Cámara de Diputados</span>
+                <span class="hidden sm:inline">Provincia San Pedro de Macorís</span>
+                <span>Alianza PRSD · PRM</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-14 items-center">
+                <div class="lg:col-span-7 reveal">
+                    <p class="eyebrow text-gold-400 mb-5">Diputado de la República</p>
+                    <h1 class="display text-5xl sm:text-6xl lg:text-[5.4rem] font-semibold">
+                        La voz <em class="text-gold-400 font-semibold">firme</em> de San Pedro en el Congreso.
+                    </h1>
+                    <p class="mt-7 text-lg text-slate-300 max-w-xl leading-relaxed">
+                        Defendiendo los derechos de los trabajadores y gestionando obras reales de salud, infraestructura y deporte para nuestras comunidades.
+                    </p>
+                    <div class="mt-9 flex flex-col sm:flex-row gap-4">
+                        <a href="#oficina-virtual" class="bg-gold-500 hover:bg-gold-400 text-navy-950 font-bold px-8 py-4 text-sm text-center transition-colors">Escribir a la Oficina Virtual</a>
+                        <a href="#labor" class="border border-white/40 hover:border-gold-400 hover:text-gold-400 font-semibold px-8 py-4 text-sm text-center transition-colors">Ver trabajo legislativo</a>
+                    </div>
+
+                    <dl class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-white/15 pt-6 text-sm">
+                        <div><dt class="eyebrow text-gold-400 mb-1">Cargo</dt><dd class="text-slate-200">Diputado por San Pedro de Macorís</dd></div>
+                        <div><dt class="eyebrow text-gold-400 mb-1">Dirigencia</dt><dd class="text-slate-200">Presidente de la CNTD</dd></div>
+                        <div><dt class="eyebrow text-gold-400 mb-1">Filiación</dt><dd class="text-slate-200">PRSD, en alianza con el PRM</dd></div>
+                    </dl>
+                </div>
+
+                <!-- Retrato -->
+                <div class="lg:col-span-5 flex justify-center reveal">
+                    <figure class="relative w-72 sm:w-80">
+                        <div class="arch-offset" aria-hidden="true"></div>
+                        <!-- TODO(cliente): reemplazar el monograma por la foto oficial:
+                             <img src="img/jacobo.jpg" alt="Jacobo Ramos, diputado por San Pedro de Macorís" class="arch w-full h-[26rem] object-cover" width="320" height="416"> -->
+                        <div class="arch relative w-full h-[26rem] bg-gradient-to-b from-brandBlue to-navy-950 flex items-center justify-center">
+                            <span class="display text-[7rem] font-semibold text-gold-400/30" aria-hidden="true">JR</span>
+                        </div>
+                        <figcaption class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-gold-500 text-navy-950 px-5 py-2.5 text-center whitespace-nowrap">
+                            <span class="block text-sm font-bold uppercase tracking-wide">Jacobo Ramos</span>
+                            <span class="block text-[11px] font-medium">Diputado · San Pedro de Macorís</span>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRIORIDADES -->
+    <section class="bg-paper border-b border-navy-900/15" aria-labelledby="prioridades-titulo">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8 py-16">
+            <h2 id="prioridades-titulo" class="eyebrow text-gold-700 mb-8">Cuatro prioridades</h2>
+            <ol class="grid grid-cols-1 md:grid-cols-4 md:divide-x divide-navy-900/20 border-t-2 border-navy-900">
+                <li class="reveal py-7 md:pr-8"><span class="display text-5xl text-gold-700 font-semibold">01</span><h3 class="display text-2xl font-semibold mt-3 text-navy-900">Trabajo digno</h3><p class="text-sm mt-2 text-ink/80">Defensa de la cesantía, del salario y de la seguridad social de la familia trabajadora.</p></li>
+                <li class="reveal py-7 md:px-8 border-t md:border-t-0 border-navy-900/20"><span class="display text-5xl text-gold-700 font-semibold">02</span><h3 class="display text-2xl font-semibold mt-3 text-navy-900">Salud</h3><p class="text-sm mt-2 text-ink/80">Intervención y remozamiento del Hospital Jaime Oliver Pino.</p></li>
+                <li class="reveal py-7 md:px-8 border-t md:border-t-0 border-navy-900/20"><span class="display text-5xl text-gold-700 font-semibold">03</span><h3 class="display text-2xl font-semibold mt-3 text-navy-900">Calles y caminos</h3><p class="text-sm mt-2 text-ink/80">Asfaltado e iluminación en Quisqueya, Ramón Santana, Gautier y El Soco.</p></li>
+                <li class="reveal py-7 md:pl-8 border-t md:border-t-0 border-navy-900/20"><span class="display text-5xl text-gold-700 font-semibold">04</span><h3 class="display text-2xl font-semibold mt-3 text-navy-900">Deporte y juventud</h3><p class="text-sm mt-2 text-ink/80">Canchas, utilería y apoyo al talento local de la provincia.</p></li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- TRAYECTORIA -->
+    <section id="trayectoria" class="bg-white">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8 py-24 grid grid-cols-1 lg:grid-cols-12 gap-14">
+            <div class="lg:col-span-5">
+                <div class="lg:sticky lg:top-28 reveal">
+                    <p class="eyebrow text-gold-700 mb-4">Trayectoria</p>
+                    <h2 class="display text-4xl sm:text-5xl font-semibold text-navy-900">Del sindicato al hemiciclo.</h2>
+                    <!-- PENDIENTE: frase redactada por el equipo de marketing; requiere aprobación del diputado -->
+                    <blockquote class="mt-8 pt-2">
+                        <span class="display block text-7xl leading-none text-gold-500" aria-hidden="true">&ldquo;</span>
+                        <p class="display text-2xl italic text-navy-900 -mt-4">Mi compromiso no es con las promesas de escritorio, sino con las soluciones de territorio.</p>
+                        <footer class="mt-3 text-sm text-ink/70">Jacobo Ramos</footer>
+                    </blockquote>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 divide-y divide-navy-900/15 border-t-2 border-navy-900">
+                <article class="reveal py-8 grid sm:grid-cols-[9rem_1fr] gap-3 sm:gap-8">
+                    <h3 class="eyebrow text-gold-700 pt-1">Liderazgo sindical</h3>
+                    <div>
+                        <h4 class="display text-2xl font-semibold text-navy-900">Presidente de la Confederación Nacional de Trabajadores Dominicanos (CNTD)</h4>
+                        <p class="mt-3 text-ink/85 leading-relaxed">Desde la CNTD ha impulsado el diálogo social por mejores salarios, condiciones laborales dignas y una seguridad social que beneficie de verdad al afiliado y a sus dependientes.</p>
+                    </div>
+                </article>
+                <article class="reveal py-8 grid sm:grid-cols-[9rem_1fr] gap-3 sm:gap-8">
+                    <h3 class="eyebrow text-gold-700 pt-1">Congreso Nacional</h3>
+                    <div>
+                        <h4 class="display text-2xl font-semibold text-navy-900">Diputado por la provincia de San Pedro de Macorís</h4>
+                        <p class="mt-3 text-ink/85 leading-relaxed">Representa a la provincia bajo la alianza del Partido Revolucionario Social Demócrata (PRSD) y el Partido Revolucionario Moderno (PRM). Su agenda se enfoca en salud, vías de comunicación y deporte.</p>
+                    </div>
+                </article>
+                <article class="reveal py-8 grid sm:grid-cols-[9rem_1fr] gap-3 sm:gap-8">
+                    <h3 class="eyebrow text-gold-700 pt-1">Forma de trabajo</h3>
+                    <div>
+                        <h4 class="display text-2xl font-semibold text-navy-900">Contacto directo con la comunidad</h4>
+                        <p class="mt-3 text-ink/85 leading-relaxed">Juntas de vecinos, clubes deportivos e iglesias: caminar los barrios y escuchar de primera mano las necesidades de la gente.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- BANDA: CESANTÍA -->
+    <section class="bg-gold-500 text-navy-950" aria-labelledby="cesantia-titulo">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8 py-16 lg:py-20 grid lg:grid-cols-12 gap-8 items-end">
+            <h2 id="cesantia-titulo" class="display lg:col-span-7 text-5xl sm:text-7xl font-semibold reveal">La cesantía no se toca.</h2>
+            <p class="lg:col-span-5 text-base sm:text-lg leading-relaxed reveal">
+                Postura firme frente a la reforma del Código de Trabajo: la cesantía es un derecho adquirido de los trabajadores y debe permanecer intacto.
+            </p>
+        </div>
+    </section>
+
+    <!-- LABOR LEGISLATIVA -->
+    <!-- VERIFICAR: estados y proyectos deben confirmarse en el Sistema de Información Legislativa de la Cámara. -->
+    <section id="labor" class="bg-paper">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8 py-24">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-10">
+                <div class="reveal">
+                    <p class="eyebrow text-gold-700 mb-4">Labor legislativa</p>
+                    <h2 class="display text-4xl sm:text-5xl font-semibold text-navy-900">Iniciativas por San Pedro.</h2>
+                </div>
+                <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrar iniciativas" id="project-filters">
+                    <button type="button" data-filter="todos" class="filter-btn">Todas</button>
+                    <button type="button" data-filter="salud" class="filter-btn">Salud</button>
+                    <button type="button" data-filter="vias" class="filter-btn">Vías</button>
+                    <button type="button" data-filter="laboral" class="filter-btn">Laboral</button>
+                    <button type="button" data-filter="deporte" class="filter-btn">Deporte</button>
+                </div>
+            </div>
+            <div id="projects-list" class="border-t-2 border-navy-900"></div>
+        </div>
+    </section>
+
+    <!-- TERRITORIO -->
+    <section id="territorio" class="ruled text-white">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8 py-24">
+            <div class="max-w-2xl mb-12 reveal">
+                <p class="eyebrow text-gold-400 mb-4">En territorio</p>
+                <h2 class="display text-4xl sm:text-5xl font-semibold">San Pedro, comunidad por comunidad.</h2>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <div class="lg:col-span-5 border-t border-gold-500/50" id="territory-list" role="tablist" aria-label="Comunidades"></div>
+                <div class="lg:col-span-7 border border-gold-500/40 p-8 sm:p-12 min-h-[20rem]" id="territory-display" aria-live="polite"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OFICINA VIRTUAL -->
+    <section id="oficina-virtual" class="bg-paper">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8 py-24 grid grid-cols-1 lg:grid-cols-12 gap-14">
+            <div class="lg:col-span-5 reveal">
+                <p class="eyebrow text-gold-700 mb-4">Oficina Virtual</p>
+                <h2 class="display text-4xl sm:text-5xl font-semibold text-navy-900">Tu barrio también tiene voz en el Congreso.</h2>
+                <p class="mt-6 text-ink/85 leading-relaxed">Cuéntanos el problema de tu calle, tu escuela o tu club. Cada solicitud recibe un número de ticket para darle seguimiento.</p>
+                <ol class="mt-10 space-y-6 border-t-2 border-navy-900 pt-6">
+                    <li class="flex gap-5"><span class="display text-3xl text-gold-700 font-semibold">1</span><div><h3 class="font-bold text-navy-900">Cuéntanos</h3><p class="text-sm text-ink/80">Llena el formulario con tu localidad y el detalle.</p></div></li>
+                    <li class="flex gap-5"><span class="display text-3xl text-gold-700 font-semibold">2</span><div><h3 class="font-bold text-navy-900">Recibe tu ticket</h3><p class="text-sm text-ink/80">Guarda el código para consultar el estado.</p></div></li>
+                    <li class="flex gap-5"><span class="display text-3xl text-gold-700 font-semibold">3</span><div><h3 class="font-bold text-navy-900">Gestionamos</h3><p class="text-sm text-ink/80">El equipo del diputado evalúa y canaliza tu caso.</p></div></li>
+                </ol>
+            </div>
+
+            <div class="lg:col-span-7 bg-white border-t-4 border-navy-900 shadow-xl p-6 sm:p-10 reveal">
+                <div class="flex border-b border-navy-900/15 mb-8" role="tablist" aria-label="Oficina Virtual">
+                    <button type="button" id="tab-btn-nueva" role="tab" class="flex-1 pb-3 font-bold text-sm text-center">Nueva solicitud</button>
+                    <button type="button" id="tab-btn-consultar" role="tab" class="flex-1 pb-3 font-bold text-sm text-center">Consultar ticket</button>
+                </div>
+
+                <form id="virtual-office-form" class="space-y-5" novalidate>
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div>
+                            <label for="citizen-name" class="block text-xs font-bold uppercase tracking-wide mb-1.5">Nombre completo *</label>
+                            <input class="field" type="text" id="citizen-name" required maxlength="80" autocomplete="name" placeholder="Ej: Juan Pérez">
+                        </div>
+                        <div>
+                            <label for="citizen-phone" class="block text-xs font-bold uppercase tracking-wide mb-1.5">Teléfono / WhatsApp *</label>
+                            <input class="field" type="tel" id="citizen-phone" required maxlength="20" autocomplete="tel" placeholder="Ej: 809-555-0199">
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div>
+                            <label for="citizen-location" class="block text-xs font-bold uppercase tracking-wide mb-1.5">Municipio / comunidad *</label>
+                            <select class="field" id="citizen-location" required>
+                                <option value="">Selecciona tu localidad...</option>
+                                <option>San Pedro de Macorís</option><option>Quisqueya</option><option>Ramón Santana</option>
+                                <option>Gautier</option><option>El Soco</option><option>Consuelo</option><option>Otro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="citizen-type" class="block text-xs font-bold uppercase tracking-wide mb-1.5">Tipo de solicitud *</label>
+                            <select class="field" id="citizen-type" required>
+                                <option value="">Tipo de gestión...</option>
+                                <option>Problema comunitario / Asfaltado</option><option>Salud y asistencia médica</option>
+                                <option>Propuesta de proyecto de ley</option><option>Deporte e instalaciones</option><option>Otra consulta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="citizen-message" class="block text-xs font-bold uppercase tracking-wide mb-1.5">Detalle o mensaje *</label>
+                        <textarea class="field" id="citizen-message" required rows="4" maxlength="1000" placeholder="Describe la situación de tu sector o tu propuesta..."></textarea>
+                    </div>
+                    <!-- Campo trampa contra bots: las personas no lo ven; si viene lleno, no se envía -->
+                    <div class="hidden" aria-hidden="true"><label>No llenar <input type="text" id="website" tabindex="-1" autocomplete="off"></label></div>
+
+                    <p id="form-error" class="hidden text-sm text-red-800 bg-red-50 border border-red-200 px-4 py-3" role="alert"></p>
+
+                    <button type="submit" id="submit-btn" class="w-full bg-navy-900 hover:bg-brandBlue text-white font-bold py-4 text-sm transition-colors disabled:opacity-60">
+                        <span id="submit-label">Enviar solicitud a la oficina legislativa</span>
+                    </button>
+                </form>
+
+                <div id="ticket-success-card" class="hidden text-center space-y-5 py-4" role="status">
+                    <i class="fa-solid fa-circle-check text-5xl text-gold-700" aria-hidden="true"></i>
+                    <h3 class="display text-3xl font-semibold text-navy-900">Solicitud registrada</h3>
+                    <div class="border border-navy-900/20 bg-paper p-5 max-w-sm mx-auto">
+                        <span class="eyebrow text-gold-700 block">Tu ticket de seguimiento</span>
+                        <span id="generated-ticket-id" class="display text-3xl font-semibold text-navy-900 block mt-1"></span>
+                    </div>
+                    <div class="flex justify-center gap-3">
+                        <button type="button" id="copy-ticket-btn" class="bg-navy-900 text-white text-xs font-bold px-5 py-3 hover:bg-brandBlue transition-colors">Copiar código</button>
+                        <button type="button" id="new-request-btn" class="border border-navy-900 text-navy-900 text-xs font-bold px-5 py-3 hover:bg-paper transition-colors">Hacer otra solicitud</button>
+                    </div>
+                </div>
+
+                <div id="consultar-ticket-section" class="hidden space-y-5">
+                    <div>
+                        <label for="lookup-ticket-input" class="block text-xs font-bold uppercase tracking-wide mb-1.5">Código de ticket</label>
+                        <div class="flex gap-2">
+                            <input class="field flex-1" type="text" id="lookup-ticket-input" maxlength="20" placeholder="Ej: SPM-2026-A1B2C3">
+                            <button type="button" id="lookup-btn" class="bg-navy-900 text-white font-bold px-6 text-xs hover:bg-brandBlue transition-colors">Consultar</button>
+                        </div>
+                    </div>
+                    <div id="ticket-status-result" class="hidden border border-navy-900/20 bg-paper p-5 space-y-1 text-sm" role="status"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <!-- PIE -->
+    <footer class="bg-navy-950 text-slate-300 border-t-4 border-gold-500">
+        <div class="max-w-7xl mx-auto px-5 lg:px-8 py-14 grid md:grid-cols-12 gap-10">
+            <div class="md:col-span-5">
+                <div class="flex items-center gap-3">
+                    <span class="w-10 h-10 border border-gold-500 text-gold-400 display text-xl font-semibold flex items-center justify-center">JR</span>
+                    <div><span class="block font-bold text-white uppercase tracking-wide">Jacobo Ramos</span><span class="block text-xs text-gold-400">Diputado por San Pedro de Macorís</span></div>
+                </div>
+                <p class="text-xs mt-5 max-w-sm leading-relaxed text-slate-400">Desarrollo para la provincia y defensa permanente de los derechos de la clase trabajadora dominicana.</p>
+            </div>
+            <nav class="md:col-span-3" aria-label="Pie de página">
+                <h2 class="eyebrow text-gold-400 mb-4">Secciones</h2>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#trayectoria" class="hover:text-gold-400">Trayectoria</a></li>
+                    <li><a href="#labor" class="hover:text-gold-400">Labor legislativa</a></li>
+                    <li><a href="#territorio" class="hover:text-gold-400">En territorio</a></li>
+                    <li><a href="#oficina-virtual" class="hover:text-gold-400">Oficina Virtual</a></li>
+                </ul>
+            </nav>
+            <div class="md:col-span-4 text-sm space-y-2">
+                <h2 class="eyebrow text-gold-400 mb-4">Contacto</h2>
+                <!-- TODO(cliente): confirmar teléfono, correo, direcciones y redes reales -->
+                <p>Cámara de Diputados, Santo Domingo.</p>
+                <p>Oficina provincial: San Pedro de Macorís, R.D.</p>
+                <p><a href="mailto:contacto@jacoboramos.do" class="hover:text-gold-400">contacto@jacoboramos.do</a></p>
+                <p class="flex gap-4 pt-2 text-lg">
+                    <a href="#" class="hover:text-gold-400" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="hover:text-gold-400" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-gold-400" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" class="hover:text-gold-400" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                </p>
+            </div>
+        </div>
+        <div class="border-t border-white/10 py-5 text-center text-xs text-slate-500">© 2026 Jacobo Ramos. Todos los derechos reservados.</div>
+    </footer>
+
+    <!-- AVISO FLOTANTE -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 bg-navy-900 text-white text-xs font-semibold px-4 py-3 border border-gold-500 translate-y-20 opacity-0 transition-all duration-300" role="status" aria-live="polite">
+        <span id="toast-message"></span>
+    </div>
+
+    <style>
+        /* Botones de filtro y pestañas (estados definidos aquí para no repetir clases largas) */
+        .filter-btn { font-size:.75rem; font-weight:700; padding:.6rem 1.1rem; border:1px solid #0B2545; color:#0B2545; background:transparent; transition:all .2s; }
+        .filter-btn:hover { background:#0B2545; color:#fff; }
+        .filter-btn[aria-pressed="true"] { background:#0B2545; color:#fff; }
+        #tab-btn-nueva, #tab-btn-consultar { border-bottom:2px solid transparent; color:#5b6472; }
+        #tab-btn-nueva[aria-selected="true"], #tab-btn-consultar[aria-selected="true"] { border-color:#0B2545; color:#0B2545; }
+        .terr-btn { width:100%; text-align:left; display:flex; align-items:baseline; gap:1.25rem; padding:1.1rem .25rem; border-bottom:1px solid rgba(212,175,55,.35); color:#cbd5e1; transition:color .2s, background-color .2s; }
+        .terr-btn:hover { color:#F3C649; }
+        .terr-btn[aria-selected="true"] { color:#fff; background-color:rgba(212,175,55,.14); }
+    </style>
+
+    <script>
+        // ============================================================
+        // CONFIGURACIÓN: aquí se conecta la web con el backend (CRM de la oficina)
+        // ============================================================
+        const CONFIG = {
+            // URL base del backend, sin barra final. Ej: 'https://oficina-jacobo.vercel.app'
+            // (en local: 'http://localhost:3000'). El backend debe tener esta web en LANDING_ALLOWED_ORIGINS.
+            // Mientras esté vacía, el formulario funciona en MODO DEMO (no guarda nada).
+            apiBaseUrl: '',
+            // Solo se usa en modo demo para inventar un ticket de prueba
+            demoTicketPrefix: 'SPM-'
+        };
+
+        // Error con un mensaje seguro para mostrarle a la persona
+        class ApiError extends Error {}
+
+        // ============================================================
+        // DATOS (editar aquí; el HTML se genera solo)
+        // VERIFICAR cada iniciativa y estado en la Cámara de Diputados antes de publicar.
+        // ============================================================
+        const projects = [
+            { id: 1, category: 'salud', label: 'Salud', status: 'En Comisión de Salud', title: 'Remozamiento del Hospital Jaime Oliver Pino', location: 'San Pedro de Macorís',
+              description: 'Resolución que solicita al Poder Ejecutivo y al Servicio Nacional de Salud la remodelación física, el equipamiento de emergencias y cuidados intensivos, y la incorporación de personal médico especialista.' },
+            { id: 2, category: 'vias', label: 'Vías', status: 'Depositado', title: 'Asfaltado y aceras para Quisqueya', location: 'Municipio Quisqueya',
+              description: 'Iniciativa para incluir al municipio en el plan de asfaltado del MOPC, atendiendo sectores sin aceras, contenes ni iluminación adecuada.' },
+            { id: 3, category: 'vias', label: 'Vías', status: 'Depositado', title: 'Pavimentación en Ramón Santana', location: 'Municipio Ramón Santana',
+              description: 'Solicitud para asfaltar los accesos principales y adecuar caminos de producción agrícola que facilitan llevar los productos a los mercados.' },
+            { id: 4, category: 'vias', label: 'Vías', status: 'En revisión', title: 'Obras viales en Gautier: Jengibre y Guayabal', location: 'Distrito municipal Gautier',
+              description: 'Intervención vial para conectar los sectores de Jengibre y Guayabal, con paso seguro para estudiantes y transporte comunitario.' },
+            { id: 5, category: 'laboral', label: 'Laboral', status: 'En debate', title: 'Defensa de la cesantía laboral', location: 'Alcance nacional',
+              description: 'Posición institucional frente a modificaciones del Código de Trabajo: la cesantía es un derecho adquirido de los trabajadores.' },
+            { id: 6, category: 'deporte', label: 'Deporte', status: 'Depositado', title: 'Remozamiento de instalaciones deportivas', location: 'Provincia San Pedro de Macorís',
+              description: 'Adecuación de canchas y entrega de utilería deportiva a clubes de barrio para promover la recreación sana y el desarrollo juvenil.' }
+        ];
+
+        const territories = [
+            { key: 'spm', num: '01', name: 'San Pedro de Macorís', type: 'Municipio cabecera', text: 'Gestiones por la remodelación del Hospital Jaime Oliver Pino y por drenaje e iluminación en los barrios del sur.' },
+            { key: 'quisqueya', num: '02', name: 'Quisqueya', type: 'Municipio', text: 'Resolución depositada para incluir al municipio en el plan general de pavimentación y aceras.' },
+            { key: 'ramon-santana', num: '03', name: 'Ramón Santana', type: 'Municipio', text: 'Atención a caminos agrícolas y accesos al poblado para impulsar la producción local.' },
+            { key: 'gautier', num: '04', name: 'Gautier', type: 'Distrito municipal', text: 'Infraestructura vial y alumbrado público para los sectores Jengibre y Guayabal.' },
+            { key: 'el-soco', num: '05', name: 'El Soco', type: 'Comunidad', text: 'Mejora del transporte comunitario, conexión segura con la autovía y fomento del deporte juvenil.' },
+            // TODO(cliente): reemplazar este texto por las gestiones reales del diputado en Consuelo
+            { key: 'consuelo', num: '06', name: 'Consuelo', type: 'Municipio', text: 'Municipio de la provincia de San Pedro de Macorís. Cuéntanos qué necesita tu comunidad y lo llevaremos a la oficina del diputado.' }
+        ];
+
+        // ============================================================
+        // UTILIDADES
+        // ============================================================
+        const $ = (s) => document.querySelector(s);
+        const $$ = (s) => document.querySelectorAll(s);
+
+        let toastTimer = null;
+        function showToast(message) {
+            const toast = $('#toast-notification');
+            $('#toast-message').textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+
+        // Escapa texto antes de insertarlo como HTML
+        function escapeHtml(value) {
+            const div = document.createElement('div');
+            div.textContent = String(value);
+            return div.innerHTML;
+        }
+
+        // ============================================================
+        // MENÚ MÓVIL
+        // ============================================================
+        const menuBtn = $('#mobile-menu-btn');
+        const mobileMenu = $('#mobile-menu');
+        function setMobileMenu(open) {
+            mobileMenu.classList.toggle('hidden', !open);
+            menuBtn.setAttribute('aria-expanded', String(open));
+        }
+        menuBtn.addEventListener('click', () => setMobileMenu(mobileMenu.classList.contains('hidden')));
+        $$('.mobile-link').forEach((l) => l.addEventListener('click', () => setMobileMenu(false)));
+
+        // ============================================================
+        // INICIATIVAS: lista editorial con detalle desplegable
+        // ============================================================
+        function renderProjects() {
+            $('#projects-list').innerHTML = projects.map((p, i) => `
+                <article class="project-row border-b border-navy-900/20" data-category="${p.category}">
+                    <h3>
+                        <button type="button" class="row-toggle w-full text-left grid grid-cols-[2.5rem_1fr_auto] sm:grid-cols-[4rem_1fr_9rem_11rem_2rem] gap-x-4 items-center py-6 hover:bg-white/60 transition-colors" aria-expanded="false" aria-controls="detail-${p.id}">
+                            <span class="display text-2xl text-gold-700 font-semibold">${String(i + 1).padStart(2, '0')}</span>
+                            <span>
+                                <span class="display block text-xl sm:text-2xl font-semibold text-navy-900">${escapeHtml(p.title)}</span>
+                                <span class="block text-xs text-ink/70 mt-1">${escapeHtml(p.location)}</span>
+                            </span>
+                            <span class="hidden sm:block eyebrow text-brandBlue">${escapeHtml(p.label)}</span>
+                            <span class="hidden sm:block text-xs font-semibold text-navy-900">${escapeHtml(p.status)}</span>
+                            <i class="row-caret fa-solid fa-chevron-down text-navy-900 text-xs transition-transform justify-self-end" aria-hidden="true"></i>
+                        </button>
+                    </h3>
+                    <div id="detail-${p.id}" class="row-detail pb-7 sm:pl-[5rem] pr-6 max-w-3xl">
+                        <p class="text-ink/85 leading-relaxed">${escapeHtml(p.description)}</p>
+                        <p class="mt-3 text-xs font-semibold text-gold-700 uppercase tracking-wide">Estatus: ${escapeHtml(p.status)}</p>
+                    </div>
+                </article>`).join('');
+
+            $$('.row-toggle').forEach((btn) => btn.addEventListener('click', () => {
+                const row = btn.closest('.project-row');
+                const open = row.classList.toggle('row-open');
+                btn.setAttribute('aria-expanded', String(open));
+            }));
+        }
+
+        // Filtra por categoría; el botón activo se marca con aria-pressed (sin usar "event")
+        function filterProjects(category) {
+            $$('.filter-btn').forEach((btn) => btn.setAttribute('aria-pressed', String(btn.dataset.filter === category)));
+            $$('.project-row').forEach((row) => row.classList.toggle('hidden', !(category === 'todos' || row.dataset.category === category)));
+        }
+        $$('.filter-btn').forEach((btn) => btn.addEventListener('click', () => filterProjects(btn.dataset.filter)));
+
+        // ============================================================
+        // TERRITORIO
+        // ============================================================
+        function renderTerritoryList() {
+            $('#territory-list').innerHTML = territories.map((t) => `
+                <button type="button" role="tab" data-territory="${t.key}" class="terr-btn">
+                    <span class="display text-2xl font-semibold text-gold-400">${t.num}</span>
+                    <span class="display text-xl sm:text-2xl font-semibold">${escapeHtml(t.name)}</span>
+                </button>`).join('');
+            $$('.terr-btn').forEach((btn) => btn.addEventListener('click', () => selectTerritory(btn.dataset.territory)));
+        }
+        function selectTerritory(key) {
+            const t = territories.find((item) => item.key === key);
+            if (!t) return;
+            $$('.terr-btn').forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset.territory === key)));
+            $('#territory-display').innerHTML = `
+                <span class="display text-8xl font-semibold text-gold-400/30 block leading-none" aria-hidden="true">${t.num}</span>
+                <p class="eyebrow text-gold-400 mt-2">${escapeHtml(t.type)}</p>
+                <h3 class="display text-4xl sm:text-5xl font-semibold mt-2">${escapeHtml(t.name)}</h3>
+                <p class="mt-5 text-slate-300 leading-relaxed max-w-lg">${escapeHtml(t.text)}</p>
+                <a href="#oficina-virtual" class="inline-block mt-8 bg-gold-500 hover:bg-gold-400 text-navy-950 font-bold text-sm px-6 py-3 transition-colors">Reportar una necesidad</a>`;
+        }
+
+        // ============================================================
+        // OFICINA VIRTUAL
+        // ============================================================
+        let activeTicket = '';
+
+        function switchVirtualTab(tab) {
+            const isNew = tab === 'nueva';
+            $('#virtual-office-form').classList.toggle('hidden', !isNew);
+            $('#consultar-ticket-section').classList.toggle('hidden', isNew);
+            $('#ticket-success-card').classList.add('hidden');
+            $('#tab-btn-nueva').setAttribute('aria-selected', String(isNew));
+            $('#tab-btn-consultar').setAttribute('aria-selected', String(!isNew));
+        }
+        $('#tab-btn-nueva').addEventListener('click', () => switchVirtualTab('nueva'));
+        $('#tab-btn-consultar').addEventListener('click', () => switchVirtualTab('consultar'));
+
+        // Código aleatorio difícil de adivinar (ej: SPM-2026-A1B2C3)
+        function generateTicketId() {
+            const bytes = new Uint8Array(3);
+            crypto.getRandomValues(bytes);
+            const code = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+            return `${CONFIG.demoTicketPrefix}${new Date().getFullYear()}-${code}`;
+        }
+
+        function showFormError(message) {
+            const box = $('#form-error');
+            box.textContent = message;
+            box.classList.toggle('hidden', !message);
+        }
+
+        // Devuelve un mensaje de error, o '' si todo está bien
+        function validateForm(d) {
+            if (d.nombre.length < 3) return 'Escribe tu nombre completo.';
+            if (!/^[0-9+()\-\s]{7,20}$/.test(d.telefono)) return 'Escribe un teléfono válido (solo números).';
+            if (!d.localidad) return 'Selecciona tu localidad.';
+            if (!d.tipo) return 'Selecciona el tipo de solicitud.';
+            if (d.mensaje.length < 10) return 'Cuéntanos un poco más en el mensaje (mínimo 10 caracteres).';
+            return '';
+        }
+
+        async function handleVirtualFormSubmit(event) {
+            event.preventDefault();
+            showFormError('');
+            if ($('#website').value) return; // campo trampa: es un bot
+
+            const data = {
+                nombre: $('#citizen-name').value.trim(),
+                telefono: $('#citizen-phone').value.trim(),
+                localidad: $('#citizen-location').value,
+                tipo: $('#citizen-type').value,
+                mensaje: $('#citizen-message').value.trim()
+            };
+            const validationError = validateForm(data);
+            if (validationError) { showFormError(validationError); return; }
+
+            const submitBtn = $('#submit-btn');
+            submitBtn.disabled = true;
+            $('#submit-label').textContent = 'Enviando...';
+            try {
+                let ticket;
+                if (CONFIG.apiBaseUrl) {
+                    const response = await fetch(`${CONFIG.apiBaseUrl}/api/solicitudes`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    const payload = await response.json().catch(() => ({}));
+                    if (!response.ok || !payload.ok || !payload.ticket) {
+                        // El servidor devuelve mensajes claros en español (validación, límite de envíos, etc.)
+                        throw new ApiError(payload.error || 'No pudimos enviar tu solicitud. Intenta de nuevo en unos minutos.');
+                    }
+                    ticket = payload.ticket; // el ticket lo genera el servidor
+                } else {
+                    console.warn('Modo demo: configura CONFIG.apiBaseUrl para guardar solicitudes.');
+                    ticket = generateTicketId();
+                }
+                activeTicket = ticket;
+                $('#generated-ticket-id').textContent = ticket;
+                $('#virtual-office-form').classList.add('hidden');
+                $('#ticket-success-card').classList.remove('hidden');
+                showToast(`Solicitud registrada: ${ticket}`);
+            } catch (error) {
+                console.error('Error al enviar la solicitud:', error);
+                showFormError(error instanceof ApiError
+                    ? error.message
+                    : 'No pudimos enviar tu solicitud. Revisa tu conexión e intenta de nuevo.');
+            } finally {
+                submitBtn.disabled = false;
+                $('#submit-label').textContent = 'Enviar solicitud a la oficina legislativa';
+            }
+        }
+        $('#virtual-office-form').addEventListener('submit', handleVirtualFormSubmit);
+
+        $('#new-request-btn').addEventListener('click', () => {
+            $('#virtual-office-form').reset();
+            $('#virtual-office-form').classList.remove('hidden');
+            $('#ticket-success-card').classList.add('hidden');
+        });
+
+        $('#copy-ticket-btn').addEventListener('click', async () => {
+            if (!activeTicket) return;
+            try { await navigator.clipboard.writeText(activeTicket); showToast('Código copiado.'); }
+            catch (error) { showToast('No se pudo copiar. Selecciónalo manualmente.'); }
+        });
+
+        // Consulta de ticket: se muestra con textContent (nunca innerHTML) para evitar inyección
+        $('#lookup-btn').addEventListener('click', async () => {
+            const code = $('#lookup-ticket-input').value.trim().toUpperCase();
+            const result = $('#ticket-status-result');
+            if (!/^SPM-\d{4}-[0-9A-F]{6}$/.test(code)) { showToast('Ingresa un código de ticket válido.'); return; }
+            result.classList.remove('hidden');
+            if (!CONFIG.apiBaseUrl) {
+                result.textContent = 'La consulta de tickets estará disponible cuando se conecte el sistema de la oficina.';
+                return;
+            }
+            result.textContent = 'Consultando...';
+            try {
+                const response = await fetch(`${CONFIG.apiBaseUrl}/api/solicitudes/${encodeURIComponent(code)}`);
+                const info = await response.json().catch(() => ({}));
+                if (response.status === 404) { result.textContent = 'No encontramos ese ticket. Verifica el código.'; return; }
+                if (!response.ok || !info.ok) throw new Error(`HTTP ${response.status}`);
+                const fecha = info.creadaEn ? new Date(info.creadaEn).toLocaleDateString('es-DO') : null;
+                result.replaceChildren();
+                [['Ticket', code], ['Estado', info.estado], ['Comunidad', info.localidad], ['Registrada', fecha]].forEach(([label, value]) => {
+                    const p = document.createElement('p');
+                    const strong = document.createElement('strong');
+                    strong.textContent = `${label}: `;
+                    p.append(strong, document.createTextNode(String(value ?? 'No disponible')));
+                    result.append(p);
+                });
+            } catch (error) {
+                console.error('Error al consultar el ticket:', error);
+                result.textContent = 'No encontramos ese ticket o hubo un problema. Verifica el código.';
+            }
+        });
+
+        // ============================================================
+        // ANIMACIÓN DE ENTRADA (solo si el navegador soporta IntersectionObserver)
+        // ============================================================
+        function setupReveal() {
+            const items = $$('.reveal');
+            if (!('IntersectionObserver' in window)) { items.forEach((el) => el.classList.add('in')); return; }
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) { entry.target.classList.add('in'); observer.unobserve(entry.target); }
+                });
+            }, { threshold: 0.12 });
+            items.forEach((el) => observer.observe(el));
+        }
+
+        // ============================================================
+        // INICIO
+        // ============================================================
+        renderProjects();
+        filterProjects('todos');
+        renderTerritoryList();
+        selectTerritory('spm');
+        switchVirtualTab('nueva');
+        setupReveal();
+    </script>
+</body>
+</html>
